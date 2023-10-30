@@ -7,7 +7,7 @@
     public static int GenerateRandomNumber(int min, int max)
     {
       var random = new Random();
-      return random.Next(min - 10, max - 10);
+      return random.Next(min, max);
     }
   }
 }
