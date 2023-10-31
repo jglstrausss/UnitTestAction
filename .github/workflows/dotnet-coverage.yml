@@ -1,7 +1,7 @@
 name: Run Code Coverage
 
 on:
-    merge_group: 
+    push: 
         branches:
             - main
 
@@ -28,7 +28,9 @@ jobs:
           run: dotnet test UnitTestActionTests/ --collect:"XPlat Code Coverage"
 
         - name: Generate Coverage Report
-          run: dotnet tool install --global overlet.console && coverlet UnitTestActionTests/bin/Release/net6.0/MyTestProject1.dll --target "dotnet" --targetargs "test UnitTestActionTests/ --no-build"
+          run: | 
+            dotnet tool install --global overlet.console 
+            coverlet UnitTestActionTests/bin/Release/net6.0/MyTestProject1.dll --target "dotnet" --targetargs "test UnitTestActionTests/ --no-build"
         
         - name: Upload Coverage Report
           uses: actions/upload-artifact@v2
