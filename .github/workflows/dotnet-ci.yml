@@ -17,10 +17,10 @@ jobs:
               uses: actions/setup-dotnet@v1
               with:
                   dotnet-version: '6.0.x'
-
-            #Optional: Build the solution
-            - name: Build
-              run: dotnet build --no-restore --configuration Release
+            
+            # Build Project to ensure the PR will not break the build
+            # - name: Build Project
+            #   run: dotnet build --configuration Release
 
             - name: Restore dependencies
               run: dotnet restore

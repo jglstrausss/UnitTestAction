@@ -1,0 +1,38 @@
+name: Run Code Coverage
+
+on:
+    merge_group: 
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+       
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: 6.0.x
+        
+        - name: Restore dependencies
+          run: dotnet restore
+
+        - name: Build
+          run: dotnet build --no-restore --configuration Release
+
+        - name: Run Tests
+          run: dotnet test UnitTestActionTests/ --collect:"XPlat Code Coverage"
+
+        - name: Generate Coverage Report
+          run: dotnet tool install --global overlet.console && coverlet UnitTestActionTests/bin/Release/net6.0/MyTestProject1.dll --target "dotnet" --targetargs "test UnitTestActionTests/ --no-build"
+        
+        - name: Upload Coverage Report
+          uses: actions/upload-artifact@v2
+          with:
+            name: coverage-report
+            path: ./coverage.json
+    
